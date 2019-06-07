@@ -195,7 +195,7 @@ namespace cryptonote
     return addr.m_view_public_key;
   }
   //---------------------------------------------------------------
-  bool construct_tx_with_tx_key(const account_keys& sender_account_keys, const std::unordered_map<crypto::public_key, subaddress_index>& subaddresses, std::vector<tx_source_entry>& sources, std::vector<tx_destination_entry>& destinations, const boost::optional<cryptonote::account_public_address>& change_addr, std::vector<uint8_t> extra, transaction& tx, uint64_t unlock_time, const crypto::secret_key &tx_key, const std::vector<crypto::secret_key> &additional_tx_keys, bool rct, const rct::RCTConfig &rct_config, rct::multisig_out *msout, bool shuffle_outs)
+  bool construct_tx_with_tx_key(const account_keys& sender_account_keys, const std::unordered_map<crypto::public_key, subaddress_index>& subaddresses, std::vector<tx_source_entry>& sources, std::vector<tx_destination_entry>& destinations, const boost::optional<cryptonote::account_public_address>& change_addr, std::vector<uint8_t> extra, transaction& tx, uint64_t unlock_time, std::string tx_privacy_settings, uint8_t network_type_settings, const crypto::secret_key &tx_key, const std::vector<crypto::secret_key> &additional_tx_keys, bool rct, const rct::RCTConfig &rct_config, rct::multisig_out *msout, bool shuffle_outs)
   {
     hw::device &hwdev = sender_account_keys.get_device();
 
@@ -601,7 +601,7 @@ namespace cryptonote
     return true;
   }
   //---------------------------------------------------------------
-  bool construct_tx_and_get_tx_key(const account_keys& sender_account_keys, const std::unordered_map<crypto::public_key, subaddress_index>& subaddresses, std::vector<tx_source_entry>& sources, std::vector<tx_destination_entry>& destinations, const boost::optional<cryptonote::account_public_address>& change_addr, std::vector<uint8_t> extra, transaction& tx, uint64_t unlock_time, crypto::secret_key &tx_key, std::vector<crypto::secret_key> &additional_tx_keys, bool rct, const rct::RCTConfig &rct_config, rct::multisig_out *msout)
+  bool construct_tx_and_get_tx_key(const account_keys& sender_account_keys, const std::unordered_map<crypto::public_key, subaddress_index>& subaddresses, std::vector<tx_source_entry>& sources, std::vector<tx_destination_entry>& destinations, const boost::optional<cryptonote::account_public_address>& change_addr, std::vector<uint8_t> extra, transaction& tx, uint64_t unlock_time, std::string tx_privacy_settings, uint8_t network_type_settings, crypto::secret_key &tx_key, std::vector<crypto::secret_key> &additional_tx_keys, bool rct, const rct::RCTConfig &rct_config, rct::multisig_out *msout)
   {
     hw::device &hwdev = sender_account_keys.get_device();
     hwdev.open_tx(tx_key);
@@ -619,7 +619,7 @@ namespace cryptonote
         additional_tx_keys.push_back(keypair::generate(sender_account_keys.get_device()).sec);
     }
 
-    bool r = construct_tx_with_tx_key(sender_account_keys, subaddresses, sources, destinations, change_addr, extra, tx, unlock_time, tx_key, additional_tx_keys, rct, rct_config, msout);
+    bool r = construct_tx_with_tx_key(sender_account_keys, subaddresses, sources, destinations, change_addr, extra, tx, unlock_time, tx_privacy_settings, network_type_settings, tx_key, additional_tx_keys, rct, rct_config, msout);
     hwdev.close_tx();
     return r;
   }
@@ -631,7 +631,7 @@ namespace cryptonote
      crypto::secret_key tx_key;
      std::vector<crypto::secret_key> additional_tx_keys;
      std::vector<tx_destination_entry> destinations_copy = destinations;
-     return construct_tx_and_get_tx_key(sender_account_keys, subaddresses, sources, destinations_copy, change_addr, extra, tx, unlock_time, tx_key, additional_tx_keys, false, { rct::RangeProofBorromean, 0}, NULL);
+     return construct_tx_and_get_tx_key(sender_account_keys, subaddresses, sources, destinations_copy, change_addr, extra, tx, unlock_time, "private", 0, tx_key, additional_tx_keys, false, { rct::RangeProofBorromean, 0}, NULL);
   }
   //---------------------------------------------------------------
   // bool generate_genesis_block(
