@@ -415,6 +415,7 @@ namespace wallet_rpc
       std::list<transfer_destination> destinations;
       uint32_t account_index;
       std::set<uint32_t> subaddr_indices;
+      std::string tx_privacy_settings;
       uint32_t priority;
       uint64_t mixin;
       uint64_t ring_size;
@@ -429,6 +430,7 @@ namespace wallet_rpc
         KV_SERIALIZE(destinations)
         KV_SERIALIZE(account_index)
         KV_SERIALIZE(subaddr_indices)
+        KV_SERIALIZE(tx_privacy_settings)
         KV_SERIALIZE(priority)
         KV_SERIALIZE_OPT(mixin, (uint64_t)0)
         KV_SERIALIZE_OPT(ring_size, (uint64_t)0)
@@ -472,6 +474,7 @@ namespace wallet_rpc
       std::list<transfer_destination> destinations;
       uint32_t account_index;
       std::set<uint32_t> subaddr_indices;
+      std::string tx_privacy_settings;
       uint32_t priority;
       uint64_t mixin;
       uint64_t ring_size;
@@ -486,6 +489,7 @@ namespace wallet_rpc
         KV_SERIALIZE(destinations)
         KV_SERIALIZE(account_index)
         KV_SERIALIZE(subaddr_indices)
+        KV_SERIALIZE(tx_privacy_settings)
         KV_SERIALIZE(priority)
         KV_SERIALIZE_OPT(mixin, (uint64_t)0)
         KV_SERIALIZE_OPT(ring_size, (uint64_t)0)
